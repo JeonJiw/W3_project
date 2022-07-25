@@ -9,7 +9,10 @@ router.get("/", (req, res) => {
 
 /* 게시글 조회 (아마도 전체글 조회) */
 router.get("/posts", async (req, res) => {
-  const posts = await Posts.find();
+  const { category } = req.query;
+
+
+  const posts = await Posts.find({category});
   // /api/posts
   res.json({
     data: posts, //key:배열값
@@ -39,7 +42,6 @@ router.post("/posts", async (req, res) => {
   }
 
   const createdPosts = await Posts.create({
-    postId,
     user,
     title,
     content,

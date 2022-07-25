@@ -2,7 +2,7 @@ const { MongoCursorExhaustedError } = require("mongodb");
 const mongoose = require("mongoose");
 
 const connect = () => {
-  mongoose.connect("mongodb://localhost:27017/nodejs_W3").catch((err) => {
+  mongoose.connect("mongodb://localhost:27017/nodejs_W3", { ignoreUndefined:true }).catch((err) => {
     console.error(err);
   });
 };

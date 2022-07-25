@@ -1,5 +1,5 @@
 const express = require('express');
-const res = require('express/lib/response');
+const Posts = require('../schemas/posts');
 const router = express.Router();
 
 
@@ -53,10 +53,25 @@ router.get('/posts/:postId', (req, res) => {
 
 //댓글 목록 조회
 router.get('/comments', (req, res) => {
-    res.json({ data : posts});
+    res.json({ data : comments});
 });
 
 // /comments/:_postId이라고 써있는데....흠.....나중에 수정이 필요하면 하자...
+
+//게시글 작성
+router.post('/posts', async (req, res) => {
+    const { user, title, content, password } = req.body; 
+
+    const posts = await Posts.find({user});
+    if (posts.length) {
+        return res.json({ success : false, errorMessage: '이미 있는 데이터입니다.' });
+    }
+
+   const createdPosts = await Posts.create({ user, title, content, password });
+
+    res.json({posts});
+});
+
 
 
 router.get('/', (req, res) => {

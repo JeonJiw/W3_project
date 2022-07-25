@@ -1,13 +1,20 @@
 const express = require('express');
+const connect = require("./schemas");
 const app = express();
 const port = 5500;
 
-
-// app.js
+connect();
 const postsRouter = require("./routes/posts");
+
+const requestMiddleware = (req, res, next) => {
+  console.log("Request URL:", req.originalUrl, " - ", new Date());
+  next();
+};
+
+app.use(express.json());//body로 들어오는 json 형태의 무엇..
+app.use(requestMiddleware);
+
 app.use("/api", [postsRouter]);
-
-
 
 
 app.get('/', (req, res) => {

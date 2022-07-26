@@ -21,21 +21,6 @@ const posts = [
     
 
 
-
-/* const comments = [    {      
-"commentId": "62d6d3fd30b5ca5442641b94",      
-"user": "Developer",      
-"content": "수정된 댓글입니다.",     
- "createdAt": "2022-07-19T15:55:41.490Z"    
-},   
-{      
-"commentId": "62d6d34b256e908fc79feaf8",      
-"user": "Developer",     
- "content": "안녕하세요 댓글입니다.",      
-"createdAt": "2022-07-19T15:52:43.212Z"    
-}  
-]; */
-
 //전체 게시글 조회 API
 router.get('/posts', (req, res) => {
     res.json({ data : posts}); //data는 위에서 정의한 posts 변수의 내용물
@@ -49,12 +34,6 @@ router.get('/posts/:postId', (req, res) => {
     res.json({ detail });
 });
 
-/* //댓글 목록 조회
-router.get('/comments', (req, res) => {
-    res.json({ data : comments});
-}); */
-
-// /comments/:_postId이라고 써있는데....흠.....나중에 수정이 필요하면 하자...
 
 //게시글 작성
 router.post('/posts', async (req, res) => {
@@ -62,14 +41,13 @@ router.post('/posts', async (req, res) => {
 
     const posts = await Posts.find({user});
     if (posts.length) {
-        return res.json({ success : false, errorMessage: '이미 있는 데이터입니다.' });
+        return res.status(400).json({ success : false, errorMessage: '이미 있는 데이터입니다.' });
     }
 
    const createdPosts = await Posts.create({ user, title, content, password });
 
     res.json({posts});
 });
-
 
 
 router.get('/', (req, res) => {

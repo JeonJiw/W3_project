@@ -46,7 +46,7 @@ router.post('/posts', async (req, res) => {
 
    const createdPosts = await Posts.create({ user, title, content, password });
 
-    res.json({posts});
+    res.json({posts,"message": "게시글을 생성하였습니다."});
 });
 
 

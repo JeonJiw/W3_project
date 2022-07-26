@@ -35,7 +35,7 @@ router.post('/comments', async (req, res) => {
 
    const createdComments = await Comments.create({ user, content, password });
 
-    res.json({comments});
+    res.json({comments,"message": "댓글을 생성하였습니다."});
 });
 
 module.exports = router;

@@ -38,4 +38,19 @@ router.post('/comments', async (req, res) => {
     res.json({comments,"message": "댓글을 생성하였습니다."});
 });
 
+
+
+//댓글 삭제
+router.delete('/comments', async (req, res) => {
+    const { password } = req.params;
+    const existsComments = await Comments.find({ password });
+
+    if (existsComments.length) {
+        await Comments.deleteOne({ password });
+    }
+
+    res.json({Comments,"message": "댓글을 삭제하였습니다."});
+})
+
+
 module.exports = router;

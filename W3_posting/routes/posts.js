@@ -1,4 +1,5 @@
 const express = require('express');
+const res = require('express/lib/response');
 const Posts = require('../schemas/post');
 const router = express.Router();
 
@@ -48,6 +49,27 @@ router.post('/posts', async (req, res) => {
 
     res.json({posts,"message": "게시글을 생성하였습니다."});
 });
+
+
+/* //게시글 수정
+router.put('/post', async (req, res) => {
+    const{ id }
+    const {title, content } = req.body; 
+
+    res.json({posts,"message": "게시글을 수정하였습니다."});
+}) */
+
+
+router.delete('/posts', async (req, res) => {
+    const { password } = req.params;
+    const existsPosts = await Posts.find({ password });
+
+    if (existsPosts.length) {
+        await Posts.deleteOne({ password });
+    }
+
+    res.json({posts,"message": "게시글을 삭제하였습니다."});
+})
 
 
 router.get('/', (req, res) => {

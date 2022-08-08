@@ -19,7 +19,7 @@ app.use("/api", [postsRouter]);
 /api 일때만 postRouter 미들웨어로 넘어가라 */
 
 app.get("/", (req, res) => {
-  res.send("Hello World!!!!!");
+  res.send("Hello World!!!!");
 });
 
 app.listen(port, () => {

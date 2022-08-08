@@ -4,16 +4,13 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   // /api
-  res.send("THIS IS HOME PAGE");
+  res.send("THIS IS POST HOME PAGE");
 });
 
 /* 게시글 조회 (아마도 전체글 조회) */
 router.get("/posts", async (req, res) => {
-  const { category } = req.query;
+  const posts = await Posts.find();
 
-
-  const posts = await Posts.find({category});
-  // /api/posts
   res.json({
     data: posts, //key:배열값
   });
@@ -23,7 +20,7 @@ router.get("/posts", async (req, res) => {
 router.get("/posts/:postId", async (req, res) => {
   const postId = req.params.postId;
 
-  const [detail] = await Posts.find({ postId: postId });
+  const [detail] = await Posts.find({ postId });
 
   res.json({
     detail,
@@ -32,14 +29,7 @@ router.get("/posts/:postId", async (req, res) => {
 
 /* 게시물 작성 (상품 생성) */
 router.post("/posts", async (req, res) => {
-  const { postId, user, title, content, password } = req.body;
-
-  const posts = await Posts.find({ postId });
-  if (posts.length) {
-    return res
-      .status(400)
-      .json({ success: false, errorMessage: "이미 있는 데이터 입니다" });
-  }
+  const { user, title, content, password } = req.body;
 
   const createdPosts = await Posts.create({
     user,

@@ -20,10 +20,10 @@ router.get("/posts", async (req, res) => {
 router.get("/posts/:postId", async (req, res) => {
   const postId = req.params.postId;
 
-  const [detail] = await Posts.find({ postId });
+  const post = await Posts.find({ postId });
 
   res.json({
-    detail,
+    post,
   });
 });
 
@@ -39,6 +39,25 @@ router.post("/posts", async (req, res) => {
   });
 
   res.json({ posts: createdPosts });
+});
+
+/* 게시글 삭제 */
+router.delete("/posts/postId", async (req, res) => {
+  const { postId } = req.params;
+  const { password } = req.body;
+
+  const post = await Posts.find({postId});
+
+  if(post.password !== password){
+    return res.status(404).json({
+      errorMessage: '비밀번호가 틀립니다.',
+    })
+  };
+
+  const deletePost = await Posts.delete(post);
+
+  res.json({deletePost, "message" : "게시물이 삭제되었습니다."});
+
 });
 
 module.exports = router;

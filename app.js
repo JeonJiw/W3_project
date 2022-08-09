@@ -14,7 +14,7 @@ const requestMiddleware = (req, res, next) => {
 app.use(express.json());
 app.use(requestMiddleware);
 
-app.use("/api", [postsRouter]);
+app.use("/", [postsRouter]);
 /* app.js에서 .post.js를 불러오면서 만든 변수/동작을 미들웨어로 실행해줘야 한다.
 /api 일때만 postRouter 미들웨어로 넘어가라 */
 

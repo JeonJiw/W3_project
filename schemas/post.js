@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const postsSchema = mongoose.Schema({
+
   postId: {
     type: String,
-    unique: true,
+    required: true,
   },
   user: {
     type: String,
@@ -21,6 +22,10 @@ const postsSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
-module.exports = mongoose.model("Posts", postsSchema);
+module.exports = mongoose.model("Post", postsSchema);

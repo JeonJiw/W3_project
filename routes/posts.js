@@ -12,21 +12,22 @@ router.get("/", async (req, res) => {
   });
 });
 
-/* 게시글 상세조회 : createdAt 안나옴 */
+/* 게시글 상세조회 : 완료  */
 router.get("/:postId", async (req, res) => {
   const _id = req.params.postId;
-
-  const post = await Post.findOne({ _id });
-
-  const result = {
-    postId: post._id,
-    user: post.user,
-    title: post.title,
-    content: post.content,
-    createdAt: post.createdAt, // 이거 안나옴
-  }
-  res.json({ result });
-});
+  try {
+    const post = await Post.findOne({ _id });
+    const result = {
+      postId: post._id,
+      user: post.user,
+      title: post.title,
+      content: post.content,
+      createdAt: post.createdAt, 
+    }
+    res.json({ result });
+    } catch (e) {
+    res.send("게시글을 찾을 수 없습니다.")
+}});
 
 /* 게시물 작성 : 완료 */ 
 router.post("/", async (req, res) => {
@@ -46,8 +47,11 @@ router.post("/", async (req, res) => {
 router.put("/:postId", async (req, res) => {
   const _id = req.params.postId;
   const {password, user, title, content} = req.body; 
-
-  if(!password){
+  
+  const post = await Post.find({_id})
+  console.log(post,"------", post[0].password)
+  
+  if(password !== post[0].password){
     return res.status(404).json({
       errorMessage: '비밀번호가 틀립니다.',
     })
@@ -66,6 +70,12 @@ router.delete("/:postId", async (req, res) => {
   const post = await Post.find({_id});
 
   if(!password){
+    return res.status(404).json({
+      errorMessage: '비밀번호가 입력해주세요',
+    })
+  }; 
+  
+  if(password !== post[0].password){
     return res.status(404).json({
       errorMessage: '비밀번호가 틀립니다.',
     })

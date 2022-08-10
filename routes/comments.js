@@ -1,28 +1,24 @@
 const express = require("express");
 const Comment = require("../schemas/comment");
 const router = express.Router();
-
 //댓글 조회
 router.get("/:postId", async (req, res) => {
-    const _id = req.params.postId;
-    const comments = await Comment.find({postId: _id});
 
-    if(!comments){
-        return message("댓글이 존재하지 않습니다.")
+    try {
+        const _id = req.params.postId;
+        const comments = await Comment.find({postId: _id});
+        console.log(comments.length)
+        const resultList = [];
+        for (const comment of comments) {
+            resultList.push(
+                {commentId: comment._id, user: comment.user, content: comment.content, createdAt: comment.createdAt}
+            );
+        }res.json(resultList)
+    } catch (e) {
+      //  if (comments.length === 0) {
+            return message("댓글이 존재하지 않습니다.")
+       // }
     }
-
-    const resultList = [];
-
-    for (const comment of comments) {
-        resultList.push({
-          commentId: comment._id,
-          user: comment.user,
-          content: comment.content,
-          createdAt: comment.createdAt,
-        });
-      }
-
-    res.json(resultList)
 });
 
 /* 댓글 작성 */

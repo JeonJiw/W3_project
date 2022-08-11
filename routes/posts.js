@@ -6,6 +6,10 @@ const router = express.Router();
 /* 게시글 조회 : 완료 */
 router.get("/", async (req, res) => {
   const posts = await Post.find();
+  
+  if(posts.length === 0){
+    return res.json({message: "게시글이 존재하지 않습니다."})
+  }
 
   res.json({
     data: posts, 
@@ -71,7 +75,7 @@ router.delete("/:postId", async (req, res) => {
 
   if(!password){
     return res.status(404).json({
-      errorMessage: '비밀번호가 입력해주세요',
+      errorMessage: '비밀번호를 입력해주세요',
     })
   }; 
   
@@ -81,7 +85,7 @@ router.delete("/:postId", async (req, res) => {
     })
   }; 
 
-  const deletePost = await Post.deleteOne({post});
+  const deletePost = await Post.deleteOne({_id});
 
   res.json({deletePost, "message" : "게시물이 삭제되었습니다."});
 
